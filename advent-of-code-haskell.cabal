@@ -1,0 +1,22 @@
+name:                advent-of-code-haskell
+version:             0.1.0.0
+license:             MIT
+license-file:        LICENSE
+author:              Alex-Diez
+maintainer:          alex.dukhno@icloud.com
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Year_2015.Puzzle1
+  build-depends:       base >=4.9 && <4.10
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  build-depends:       base, HUnit, hspec
+
+test-suite spec
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base, hspec, advent-of-code-haskell
