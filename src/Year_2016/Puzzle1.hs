@@ -19,10 +19,9 @@ module Year_2016.Puzzle1 (distance, distance2) where
     turn West 'R'   = North
 
     type Point = (Int, Int)
-    type Position = (Direction, Point)
 
     makeDeltas :: String -> [(Char, Int)]
-    makeDeltas src = makeDeltas' src []
+    makeDeltas src = makeDeltas' (filter (\c -> c /= ',' && c /= ' ') src) []
         where
             makeDeltas' :: String -> [(Char, Int)] -> [(Char, Int)]
             makeDeltas' "" deltas       = deltas
@@ -37,7 +36,7 @@ module Year_2016.Puzzle1 (distance, distance2) where
 
     distance2 :: String -> Int
     distance2 path =
-        let (x, y) = findCrossedPoint North (0, 0) (makeDeltas $ filter (\c -> c /= ',' && c /= ' ') path)
+        let (x, y) = findCrossedPoint North (0, 0) (makeDeltas path)
         in  abs x + abs y
         where
             findCrossedPoint :: Direction -> Point -> [(Char, Int)] -> Point
@@ -70,15 +69,15 @@ module Year_2016.Puzzle1 (distance, distance2) where
 
     distance :: String -> Int
     distance path =
-        let (_, (x, y)) = findPoint (North, (0, 0)) (makeDeltas $ filter (\c -> c /= ',' && c /= ' ') path)
+        let (x, y) = findPoint North (0, 0) (makeDeltas path)
         in  abs x + abs y
         where
-            findPoint :: Position -> [(Char, Int)] -> Position
-            findPoint point [] = point
-            findPoint (d, (x, y)) ((side, steps):path) =
+            findPoint :: Direction -> Point -> [(Char, Int)] -> Point
+            findPoint _ point [] = point
+            findPoint d (x, y) ((side, steps):path) =
                 let dir = turn d side
                 in case dir of
-                    North   -> findPoint (dir, (x + steps, y)) path
-                    South   -> findPoint (dir, (x - steps, y)) path
-                    East    -> findPoint (dir, (x, y + steps)) path
-                    West    -> findPoint (dir, (x, y - steps)) path
+                    North   -> findPoint dir (x + steps, y) path
+                    South   -> findPoint dir (x - steps, y) path
+                    East    -> findPoint dir (x, y + steps) path
+                    West    -> findPoint dir (x, y - steps) path
