@@ -136,19 +136,17 @@ module Year_2016.Puzzle2 (findPassword, findPassword2) where
     findPassword ins = passwordFromIns NineKeys $ lines ins
 
     passwordFromIns :: KeyBoard -> [String] -> String
-    passwordFromIns _ [] = ['5']
+    passwordFromIns _ [] = "5"
     passwordFromIns keyboard ins = passwordWithKey '5' ins
         where
             passwordWithKey :: Button -> [String] -> String
             passwordWithKey _ [] = []
             passwordWithKey button (insS:insSet) =
-                let key = move insS button
+                let key = foldl move button insS
                 in  key : (passwordWithKey key insSet)
                 where
-                    move :: String -> Button -> Button
-                    move "" button = button
-                    move (i:inS) button
-                        | i == 'U' = move inS (up button keyboard)
-                        | i == 'L' = move inS (left button keyboard)
-                        | i == 'D' = move inS (down button keyboard)
-                        | i == 'R' = move inS (right button keyboard)
+                    move :: Button -> Char -> Button
+                    move button 'U' = up button keyboard
+                    move button 'L' = left button keyboard
+                    move button 'D' = down button keyboard
+                    move button 'R' = right button keyboard
